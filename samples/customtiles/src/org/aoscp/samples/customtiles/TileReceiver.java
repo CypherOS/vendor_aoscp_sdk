@@ -55,7 +55,7 @@ public class TileReceiver extends BroadcastReceiver {
 
             PendingIntent pendingIntent =
                     PendingIntent.getBroadcast(context, 0,
-                            newIntent , PendingIntent.FLAG_UPDATE_CURRENT);
+                            intent , PendingIntent.FLAG_UPDATE_CURRENT);
 
             CustomTile customTile = new CustomTile.Builder(context)
                     .setOnClickIntent(pendingIntent)
