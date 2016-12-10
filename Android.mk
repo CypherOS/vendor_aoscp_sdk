@@ -54,8 +54,8 @@ LOCAL_SRC_FILES += \
     $(call all-Iaidl-files-under, $(aoscp_app_src))
 
 LOCAL_INTERMEDIATE_SOURCES := \
-    $(aoscp_software_res)/aoscp/R.java \
-    $(aoscp_software_res)/aoscp/Manifest.java \
+    $(aoscp_software_res)/org/aoscp/software/R.java \
+    $(aoscp_software_res)/org/aoscp/software/Manifest.java \
     $(aoscp_software_res)/org/aoscp/software/interno/R.java
 
 # Include aidl files from aoscp.app namespace as well as internal src aidl files
