@@ -53,13 +53,13 @@ LOCAL_SRC_FILES := \
 LOCAL_SRC_FILES += \
     $(call all-Iaidl-files-under, $(aoscp_app_src))
 
-aoscpsdk_LOCAL_INTERMEDIATE_SOURCES := \
+cosplat_LOCAL_INTERMEDIATE_SOURCES := \
     $(aoscp_software_res)/aoscp/software/R.java \
     $(aoscp_software_res)/aoscp/software/Manifest.java \
     $(aoscp_software_res)/org/aoscp/software/interno/R.java
 	
 LOCAL_INTERMEDIATE_SOURCES := \
-    $(aoscpsdk_LOCAL_INTERMEDIATE_SOURCES)
+    $(cosplat_LOCAL_INTERMEDIATE_SOURCES)
 
 # Include aidl files from aoscp.app namespace as well as internal src aidl files
 LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/src/java
@@ -101,8 +101,8 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := services
 
 LOCAL_SRC_FILES := \
-           $(call all-java-files-under, $(aoscp_app_src)) \
-           $(call all-Iaidl-files-under, $(aoscp_app_src))
+    $(call all-java-files-under, $(aoscp_app_src)) \
+    $(call all-Iaidl-files-under, $(aoscp_app_src))
 
 # Included aidl files from aoscp.app namespace
 LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/src/java
@@ -112,40 +112,119 @@ include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # ===========================================================
 # Common Droiddoc vars
-cosplat.docs.src_files := \
+cosplat_docs_src_files := \
     $(call all-java-files-under, $(aoscp_app_src)) \
     $(call all-html-files-under, $(aoscp_app_src))
-cosplat.docs.java_libraries := \
+
+cosplat_docs_java_libraries := \
     org.aoscp.software.sdk
+	
+# SDK version as defined
+cosplat_docs_SDK_VERSION := 3.5
+
+# Release version
+cosplat_docs_SDK_REL_ID := 0
+
+cosplat_docs_LOCAL_MODULE_CLASS := JAVA_LIBRARIES
+
+cosplat_docs_LOCAL_API_CHECK_ADDITIONAL_JAVA_DIR:= \
+    $(call intermediates-dir-for,JAVA_LIBRARIES,org.aoscp.software,,COMMON)
+
+cosplat_docs_LOCAL_ADDITIONAL_JAVA_DIR:= \
+    $(cosplat_docs_LOCAL_API_CHECK_ADDITIONAL_JAVA_DIR)
+
+cosplat_docs_LOCAL_DROIDDOC_SOURCE_PATH := \
+    $(cosplat_docs_src_files)
+
+intermediates.COMMON := $(call intermediates-dir-for,$(LOCAL_MODULE_CLASS), org.aoscp.software.sdk,,COMMON)
+
+# ====  The API stubs and current.xml ===========================
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES:= \
+    $(cosplat_docs_src_files) \
+    $(call all-java-files-under, $(library_src))
+LOCAL_INTERMEDIATE_SOURCES:= $(cosplat_LOCAL_INTERMEDIATE_SOURCES)
+LOCAL_JAVA_LIBRARIES:= $(cosplat_docs_java_libraries)
+LOCAL_MODULE_CLASS:= $(cosplat_docs_LOCAL_MODULE_CLASS)
+LOCAL_DROIDDOC_SOURCE_PATH:= $(cosplat_docs_LOCAL_DROIDDOC_SOURCE_PATH)
+LOCAL_ADDITIONAL_JAVA_DIR:= $(intermediates.COMMON)/src
+LOCAL_ADDITIONAL_DEPENDENCIES:= $(cosplat_docs_LOCAL_ADDITIONAL_DEPENDENCIES)
+
+LOCAL_MODULE := aoscp-api-stubs
+
+LOCAL_DROIDDOC_CUSTOM_TEMPLATE_DIR:= build/tools/droiddoc/templates-sdk
+
+LOCAL_DROIDDOC_OPTIONS:= \
+        -stubs $(TARGET_OUT_COMMON_INTERMEDIATES)/JAVA_LIBRARIES/aoscpsdk_stubs_current_intermediates/src \
+        -api $(INTERNAL_AOSCP_PLATFORM_API_FILE) \
+        -removedApi $(INTERNAL_AOSCP_PLATFORM_REMOVED_API_FILE) \
+        -nodocs
+
+LOCAL_UNINSTALLABLE_MODULE := true
+
+include $(BUILD_DROIDDOC)
+
+$(full_target): $(aoscp_framework_built) $(gen)
+$(INTERNAL_AOSCP_PLATFORM_API_FILE): $(full_target)
+
+# ====  The system API stubs ===================================
+include $(CLEAR_VARS)
+
+LOCAL_SRC_FILES:= \
+    $(cosplat_docs_src_files) \
+    $(call all-java-files-under, $(library_src))
+LOCAL_INTERMEDIATE_SOURCES:= $(cosplat_LOCAL_INTERMEDIATE_SOURCES)
+LOCAL_JAVA_LIBRARIES:= $(cosplat_docs_java_libraries)
+LOCAL_MODULE_CLASS:= $(cosplat_docs_LOCAL_MODULE_CLASS)
+LOCAL_DROIDDOC_SOURCE_PATH:= $(cosplat_docs_LOCAL_DROIDDOC_SOURCE_PATH)
+LOCAL_ADDITIONAL_JAVA_DIR:= $(intermediates.COMMON)/src
+LOCAL_ADDITIONAL_DEPENDENCIES:= $(cosplat_docs_LOCAL_ADDITIONAL_DEPENDENCIES)
+
+LOCAL_MODULE := aoscp-system-api-stubs
+
+LOCAL_DROIDDOC_OPTIONS:=\
+        -stubs $(TARGET_OUT_COMMON_INTERMEDIATES)/JAVA_LIBRARIES/aoscpsdk_system_stubs_current_intermediates/src \
+        -showAnnotation android.annotation.SystemApi \
+        -api $(INTERNAL_AOSCP_PLATFORM_SYSTEM_API_FILE) \
+        -removedApi $(INTERNAL_AOSCP_PLATFORM_SYSTEM_REMOVED_API_FILE) \
+        -nodocs
+
+LOCAL_DROIDDOC_CUSTOM_TEMPLATE_DIR:= build/tools/droiddoc/templates-sdk
+
+LOCAL_UNINSTALLABLE_MODULE := true
+
+include $(BUILD_DROIDDOC)
+
+$(full_target): $(aoscp_framework_built) $(gen)
+$(INTERNAL_AOSCP_PLATFORM_API_FILE): $(full_target)
 
 # Documentation
 # ===========================================================
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := org.aoscp.software.sdk
-LOCAL_INTERMEDIATE_SOURCES:=$(aoscpsdk_LOCAL_INTERMEDIATE_SOURCES)
+LOCAL_INTERMEDIATE_SOURCES:= $(cosplat_LOCAL_INTERMEDIATE_SOURCES)
 LOCAL_MODULE_CLASS := JAVA_LIBRARIES
 LOCAL_MODULE_TAGS := optional
 
-intermediates.COMMON := $(call intermediates-dir-for,$(LOCAL_MODULE_CLASS), org.aoscp.software.sdk,,COMMON)
-
-LOCAL_SRC_FILES := $(cosplat.docs.src_files)
+LOCAL_SRC_FILES := $(cosplat_docs_src_files)
 LOCAL_ADDITONAL_JAVA_DIR := $(intermediates.COMMON)/src
 
-LOCAL_SDK_VERSION := 21
 LOCAL_IS_HOST_MODULE := false
 LOCAL_DROIDDOC_CUSTOM_TEMPLATE_DIR := vendor/aoscp/build/tools/droiddoc/templates-aoscpsdk
 LOCAL_ADDITIONAL_DEPENDENCIES := \
-        services
+    services
 
-LOCAL_JAVA_LIBRARIES := $(cosplat.docs.java_libraries)
+LOCAL_JAVA_LIBRARIES := $(cosplat_docs_java_libraries)
 
 LOCAL_DROIDDOC_OPTIONS := \
     -offlinemode \
-	-hidePackage org.aoscp.software.interno
+    -hidePackage org.aoscp.software.interno \
     -hdf android.whichdoc offline \
-    -federate Android http://developer.android.com \
-    -federationapi Android prebuilts/sdk/api/21.txt
+    -hdf sdk.version $(cosplat_docs_docs_SDK_VERSION) \
+    -hdf sdk.rel.id $(cosplat_docs_docs_SDK_REL_ID) \
+    -hdf sdk.preview 0 \
 
 $(full_target): $(aoscp_framework_built) $(gen)
 include $(BUILD_DROIDDOC)
