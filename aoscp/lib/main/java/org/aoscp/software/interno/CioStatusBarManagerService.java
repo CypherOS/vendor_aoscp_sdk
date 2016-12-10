@@ -338,13 +338,13 @@ public class CioStatusBarManagerService extends SystemService {
 
     private void enforceCustomTilePublish() {
         mContext.enforceCallingOrSelfPermission(
-                org.aoscp.software.Manifest.permission.PUBLISH_CUSTOM_TILE,
+                aoscp.software.Manifest.permission.PUBLISH_CUSTOM_TILE,
                 "StatusBarManagerService");
     }
 
     private void enforceBindCustomTileListener() {
         mContext.enforceCallingOrSelfPermission(
-                org.aoscp.software.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE,
+                aoscp.software.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE,
                 "StatusBarManagerService");
     }
 
@@ -369,7 +369,7 @@ public class CioStatusBarManagerService extends SystemService {
             //TODO: Implement this in the future
             //c.secureSettingName = Settings.Secure.ENABLED_CUSTOM_TILE_LISTENERS;
             c.bindPermission = 
-			        org.aoscp.software.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE;
+			        aoscp.software.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE;
             //TODO: Implement this in the future
             //c.settingsAction = Settings.ACTION_CUSTOM_TILE_LISTENER_SETTINGS;
             c.clientLabel = R.string.custom_tile_listener_binding_label;
