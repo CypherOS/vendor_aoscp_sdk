@@ -11,8 +11,17 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
 LOCAL_PATH := $(call my-dir)
+
+# We have a special case here where we build the library's resources
+# independently from its code, so we need to find where the resource
+# class source got placed in the course of building the resources.
+# Thus, the magic here.
+# Also, this module cannot depend directly on the R.java file; if it
+# did, the PRIVATE_* vars for R.java wouldn't be guaranteed to be correct.
+# Instead, it depends on the R.stamp file, which lists the corresponding
+# R.java file as a prerequisite.
+aoscp_software_res := APPS/org.aoscp.software-res_intermediates/src
 
 # The CypherOS Software Framework Library
 # ============================================================
@@ -23,12 +32,13 @@ library_src := aoscp/lib/main/java
 
 LOCAL_MODULE := org.aoscp.software
 LOCAL_MODULE_TAGS := optional
-LOCAL_JAVA_LIBRARIES := services
-LOCAL_REQUIRED_MODULES := services
+
+LOCAL_JAVA_LIBRARIES := \
+    services
 
 LOCAL_SRC_FILES := \
-           $(call all-java-files-under, $(aoscp_app_src)) \
-           $(call all-java-files-under, $(library_src))
+    $(call all-java-files-under, $(aoscp_app_src)) \
+    $(call all-java-files-under, $(library_src))
 
 ## READ ME: ########################################################
 ##
@@ -41,13 +51,26 @@ LOCAL_SRC_FILES := \
 ##
 ## READ ME: ########################################################
 LOCAL_SRC_FILES += \
-           $(call all-Iaidl-files-under, $(aoscp_app_src))
+    $(call all-Iaidl-files-under, $(aoscp_app_src))
+
+LOCAL_INTERMEDIATE_SOURCES := \
+    $(aoscp_software_res)/aoscp/R.java \
+    $(aoscp_software_res)/aoscp/Manifest.java \
+    $(aoscp_software_res)/org/aoscp/software/interno/R.java
 
 # Include aidl files from aoscp.app namespace as well as internal src aidl files
 LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/src/java
 
 include $(BUILD_JAVA_LIBRARY)
-framework_module := $(LOCAL_INSTALLED_MODULE)
+aoscp_framework_module := $(LOCAL_INSTALLED_MODULE)
+
+# Make sure that R.java and Manifest.java are built before we build
+# the source for this library.
+aoscp_framework_res_R_stamp := \
+    $(call intermediates-dir-for,APPS,org.aoscp.software-res,,COMMON)/src/R.stamp
+$(full_classes_compiled_jar): $(aoscp_framework_res_R_stamp)
+
+$(aoscp_framework_module): | $(dir $(aoscp_framework_module))org.aoscp.software-res.apk
 
 aoscp_framework_built := $(call java-lib-deps, org.aoscp.software)
 
@@ -121,6 +144,8 @@ LOCAL_DROIDDOC_OPTIONS := \
 
 $(full_target): $(aoscp_framework_built) $(gen)
 include $(BUILD_DROIDDOC)
+
+include $(call first-makefiles-under,$(LOCAL_PATH))
 
 # Cleanup temp vars
 # ===========================================================

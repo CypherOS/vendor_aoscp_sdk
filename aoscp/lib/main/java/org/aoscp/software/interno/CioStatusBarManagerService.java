@@ -45,7 +45,7 @@ import org.aoscp.interno.statusbar.IStatusBarCustomTileHolder;
 
 import java.util.ArrayList;
 
-import com.android.internal.R;
+import org.aoscp.software.interno.R;
 
 /**
  * Internal service which manages interactions with system ui elements
@@ -338,13 +338,13 @@ public class CioStatusBarManagerService extends SystemService {
 
     private void enforceCustomTilePublish() {
         mContext.enforceCallingOrSelfPermission(
-                android.Manifest.permission.PUBLISH_CUSTOM_TILE,
+                aoscp.Manifest.permission.PUBLISH_CUSTOM_TILE,
                 "StatusBarManagerService");
     }
 
     private void enforceBindCustomTileListener() {
         mContext.enforceCallingOrSelfPermission(
-                android.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE,
+                aoscp.Manifest.permission.BIND_CUSTOM_TILE_LISTENER_SERVICE,
                 "StatusBarManagerService");
     }
 

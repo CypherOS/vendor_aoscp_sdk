@@ -13,19 +13,27 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-LOCAL_PATH:= $(call my-dir)
+LOCAL_PATH := $(call my-dir)
+
 include $(CLEAR_VARS)
 
-LOCAL_MODULE_TAGS := tests
-
-LOCAL_STATIC_JAVA_LIBRARIES := \
-    org.aoscp.software.sdk
-
-LOCAL_SRC_FILES := $(call all-subdir-java-files)
-
-LOCAL_PACKAGE_NAME := CioPlatformTests
+LOCAL_PACKAGE_NAME := org.aoscp.software-res
 LOCAL_CERTIFICATE := platform
+LOCAL_AAPT_FLAGS := --auto-add-overlay
 
-LOCAL_PROGUARD_ENABLED := disabled
+LOCAL_RESOURCE_DIR := $(addprefix $(LOCAL_PATH)/, res)
+
+# Tell aapt to create "extending (non-application)" resource IDs,
+# since these resources will be used by many apps.
+LOCAL_AAPT_FLAGS := -x
+
+LOCAL_MODULE_TAGS := optional
+
+# Install this alongside the libraries.
+LOCAL_MODULE_PATH := $(TARGET_OUT_JAVA_LIBRARIES)
+
+# Create package-export.apk, which other packages can use to get
+# PRODUCT-agnostic resource data like IDs and type definitions.
+LOCAL_EXPORT_PACKAGE_RESOURCES := true
 
 include $(BUILD_PACKAGE)
