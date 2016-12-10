@@ -142,6 +142,7 @@ LOCAL_JAVA_LIBRARIES := $(cosplat.docs.java_libraries)
 
 LOCAL_DROIDDOC_OPTIONS := \
     -offlinemode \
+	-hidePackage org.aoscp.software.interno
     -hdf android.whichdoc offline \
     -federate Android http://developer.android.com \
     -federationapi Android prebuilts/sdk/api/21.txt
