@@ -53,10 +53,13 @@ LOCAL_SRC_FILES := \
 LOCAL_SRC_FILES += \
     $(call all-Iaidl-files-under, $(aoscp_app_src))
 
-LOCAL_INTERMEDIATE_SOURCES := \
+aoscpsdk_LOCAL_INTERMEDIATE_SOURCES := \
     $(aoscp_software_res)/aoscp/software/R.java \
     $(aoscp_software_res)/aoscp/software/Manifest.java \
     $(aoscp_software_res)/org/aoscp/software/interno/R.java
+	
+LOCAL_INTERMEDIATE_SOURCES := \
+    $(aoscpsdk_LOCAL_INTERMEDIATE_SOURCES)
 
 # Include aidl files from aoscp.app namespace as well as internal src aidl files
 LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/src/java
@@ -120,6 +123,7 @@ cosplat.docs.java_libraries := \
 include $(CLEAR_VARS)
 
 LOCAL_MODULE := org.aoscp.software.sdk
+LOCAL_INTERMEDIATE_SOURCES:=$(aoscpsdk_LOCAL_INTERMEDIATE_SOURCES)
 LOCAL_MODULE_CLASS := JAVA_LIBRARIES
 LOCAL_MODULE_TAGS := optional
 
