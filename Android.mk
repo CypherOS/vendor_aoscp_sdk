@@ -19,7 +19,7 @@ LOCAL_PATH := $(call my-dir)
 include $(CLEAR_VARS)
 
 aoscp_app_src := src/java/
-library_src := aoscp/lib/java/org/aoscp/software/interno
+library_src := aoscp/lib/main/java
 
 LOCAL_MODULE := org.aoscp.software
 LOCAL_MODULE_TAGS := optional
@@ -127,5 +127,3 @@ include $(BUILD_DROIDDOC)
 cosplat.docs.src_files :=
 cosplat.docs.java_libraries :=
 intermediates.COMMON :=
-
-include $(call all-makefiles-under, $(LOCAL_PATH))
