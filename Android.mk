@@ -225,6 +225,7 @@ LOCAL_DROIDDOC_OPTIONS := \
     -hdf sdk.version $(cosplat_docs_docs_SDK_VERSION) \
     -hdf sdk.rel.id $(cosplat_docs_docs_SDK_REL_ID) \
     -hdf sdk.preview 0 \
+	-since $(AOSCP_SRC_API_DIR)/1.txt 1
 
 $(full_target): $(aoscp_framework_built) $(gen)
 include $(BUILD_DROIDDOC)
