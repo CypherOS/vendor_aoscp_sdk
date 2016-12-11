@@ -127,12 +127,6 @@ cosplat_docs_SDK_REL_ID := 0
 
 cosplat_docs_LOCAL_MODULE_CLASS := JAVA_LIBRARIES
 
-cosplat_docs_LOCAL_API_CHECK_ADDITIONAL_JAVA_DIR:= \
-    $(call intermediates-dir-for,JAVA_LIBRARIES,org.aoscp.software,,COMMON)
-
-cosplat_docs_LOCAL_ADDITIONAL_JAVA_DIR:= \
-    $(cosplat_docs_LOCAL_API_CHECK_ADDITIONAL_JAVA_DIR)
-
 cosplat_docs_LOCAL_DROIDDOC_SOURCE_PATH := \
     $(cosplat_docs_src_files)
 
@@ -157,9 +151,11 @@ LOCAL_DROIDDOC_CUSTOM_TEMPLATE_DIR:= build/tools/droiddoc/templates-sdk
 
 LOCAL_DROIDDOC_OPTIONS:= \
         -stubs $(TARGET_OUT_COMMON_INTERMEDIATES)/JAVA_LIBRARIES/aoscpsdk_stubs_current_intermediates/src \
+		-stubpackages aoscp.app:aoscp.os:aoscp.software:org.aoscp.software \
         -api $(INTERNAL_AOSCP_PLATFORM_API_FILE) \
         -removedApi $(INTERNAL_AOSCP_PLATFORM_REMOVED_API_FILE) \
-        -nodocs
+        -nodocs \
+        -verbose
 
 LOCAL_UNINSTALLABLE_MODULE := true
 
@@ -179,16 +175,17 @@ LOCAL_JAVA_LIBRARIES:= $(cosplat_docs_java_libraries)
 LOCAL_MODULE_CLASS:= $(cosplat_docs_LOCAL_MODULE_CLASS)
 LOCAL_DROIDDOC_SOURCE_PATH:= $(cosplat_docs_LOCAL_DROIDDOC_SOURCE_PATH)
 LOCAL_ADDITIONAL_JAVA_DIR:= $(intermediates.COMMON)/src
-LOCAL_ADDITIONAL_DEPENDENCIES:= $(cosplat_docs_LOCAL_ADDITIONAL_DEPENDENCIES)
 
 LOCAL_MODULE := aoscp-system-api-stubs
 
 LOCAL_DROIDDOC_OPTIONS:=\
         -stubs $(TARGET_OUT_COMMON_INTERMEDIATES)/JAVA_LIBRARIES/aoscpsdk_system_stubs_current_intermediates/src \
+		-stubpackages aoscp.app:aoscp.os:aoscp.software:org.aoscp.software \
         -showAnnotation android.annotation.SystemApi \
         -api $(INTERNAL_AOSCP_PLATFORM_SYSTEM_API_FILE) \
         -removedApi $(INTERNAL_AOSCP_PLATFORM_SYSTEM_REMOVED_API_FILE) \
-        -nodocs
+        -nodocs \
+        -verbose
 
 LOCAL_DROIDDOC_CUSTOM_TEMPLATE_DIR:= build/tools/droiddoc/templates-sdk
 
