@@ -67,7 +67,7 @@ public class Build {
      *         }
      *     }
      * }
-     * </p>
+     * </pre>
      */
     public static class AOSCP_VERSION_API {
         /**
