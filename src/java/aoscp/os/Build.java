@@ -34,6 +34,7 @@ public class Build {
      *
      * This parcelable version should be the latest version API version listed in
      * {@link AOSCP_VERSION_API}
+	 * @hide
      */
     public static final int PARCELABLE_VERSION = AOSCP_VERSION_API.CHEESECAKE;
 	
