@@ -231,7 +231,10 @@ public class CioStatusBarManager {
             return sService;
         }
         IBinder b = ServiceManager.getService(CioContextConstants.CIO_STATUS_BAR_SERVICE);
-        sService = ICioStatusBarManager.Stub.asInterface(b);
-        return sService;
+        if (b != null) {
+            sService = ICioStatusBarManager.Stub.asInterface(b);
+            return sService;
+        }
+        return null;
     }
 }
