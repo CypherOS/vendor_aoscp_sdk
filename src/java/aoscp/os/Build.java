@@ -18,7 +18,7 @@ package aoscp.os;
 
 import android.os.SystemProperties;
 
-import java.util.HashMap;
+import android.util.SparseArray;
 
 /**
  * Information about the current CypherOS build, extracted from system properties.
@@ -27,10 +27,10 @@ public class Build {
     /** Value used for when a build property is unknown. */
     public static final String UNKNOWN = "unknown";
 
-    private static final HashMap<Integer, String> sdkMap;
+    private static final SparseArray<String> sdkMap;
     static
     {
-        sdkMap = new HashMap<Integer, String>();
+        sdkMap = new SparseArray<String>();
         sdkMap.put(AOSCP_VERSION_API.CHEESECAKE, "Cheesecake");
     }
 
