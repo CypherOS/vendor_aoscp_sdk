@@ -81,6 +81,13 @@ public class CustomTile implements Parcelable {
      * a {@link GridExpandedStyle} or a {@link ListExpandedStyle}
      */
 	public ExpandedStyle expandedStyle;
+	
+	/**
+     * Boolean that forces the status bar panel to collapse when a user clicks on the
+     * {@link CustomTile}
+     * By default {@link #collapsePanel} is true
+     */
+    public boolean collapsePanel = true;
 
     /**
      * Unflatten the CustomTile from a parcel.
@@ -119,6 +126,7 @@ public class CustomTile implements Parcelable {
 		
 		if (parcelableVersion >= Build.AOSCP_VERSION_API.CHEESECAKE) {
             this.resourcesPackageName = parcel.readString();
+			this.collapsePanel = (parcel.readInt() == 1);
         }
 		
         parcel.setDataPosition(startPosition + parcelableSize);
@@ -149,7 +157,6 @@ public class CustomTile implements Parcelable {
     public String toString() {
         StringBuilder b = new StringBuilder();
         String NEW_LINE = System.getProperty("line.separator");
-		b.append("resourcesPackageName=" + resourcesPackageName + NEW_LINE);
         if (onClickUri != null) {
             b.append("onClickUri=" + onClickUri.toString() + NEW_LINE);
         }
@@ -168,7 +175,10 @@ public class CustomTile implements Parcelable {
 		if (expandedStyle != null) {
             b.append("expandedStyle=" + expandedStyle + NEW_LINE);
         }
+		
         b.append("icon=" + icon + NEW_LINE);
+		b.append("resourcesPackageName=" + resourcesPackageName + NEW_LINE);
+        b.append("collapsePanel=" + collapsePanel + NEW_LINE);
         return b.toString();
     }
 
@@ -185,6 +195,7 @@ public class CustomTile implements Parcelable {
         that.contentDescription = this.contentDescription;
 		that.expandedStyle = this.expandedStyle;
         that.icon = this.icon;
+		that.collapsePanel = this.collapsePanel;
     }
 
     @Override
@@ -245,7 +256,8 @@ public class CustomTile implements Parcelable {
 		
 		// ==== CHEESECAKE =====
         out.writeString(resourcesPackageName);
-
+		out.writeInt(collapsePanel ? 1 : 0);
+		
         // Go back and write size
         int parcelableSize = out.dataPosition() - startPosition;
         out.setDataPosition(sizePosition);
@@ -728,6 +740,7 @@ public class CustomTile implements Parcelable {
         private int mIcon;
         private Context mContext;
 		private ExpandedStyle mExpandedStyle;
+		private boolean mCollapsePanel;
 
         /**
          * Constructs a new Builder with the defaults:
@@ -831,6 +844,17 @@ public class CustomTile implements Parcelable {
             }
             return this;
         }
+		
+		/**
+         * Set whether or not the Statusbar Panel should be collapsed when an
+         * {@link #onClick} or {@link #onClickUri} event is fired.
+         * @param bool
+         * @return {@link aoscp.app.CustomTile.Builder}
+         */
+        public Builder shouldCollapsePanel(boolean bool) {
+            mCollapsePanel = bool;
+            return this;
+        }
 
         /**
          * Create a {@link aoscp.app.CustomTile} object
@@ -846,6 +870,7 @@ public class CustomTile implements Parcelable {
             tile.contentDescription = mContentDescription;
 			tile.expandedStyle = mExpandedStyle;
             tile.icon = mIcon;
+			tile.collapsePanel = mCollapsePanel;
             return tile;
         }
     }
