@@ -18,6 +18,7 @@ package org.aoscp.tests.customtiles;
 
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Handler;
 
 import aoscp.app.CustomTile;
@@ -118,6 +119,17 @@ public class CioStatusBarTest extends TestActivity {
                                     DummySettings.class)
                                     .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
                             .setContentDescription("Content description")
+                            .build();
+                    CioStatusBarManager.getInstance(CioStatusBarTest.this)
+                            .publishTile(CUSTOM_TILE_SETTINGS_ID, customTile);
+                }
+            },
+			
+			new Test("test publish tile with custom uri") {
+                public void run() {
+                    CustomTile customTile = new CustomTile.Builder(CioStatusBarTest.this)
+                            .setIcon(R.drawable.ic_launcher)
+                            .setOnClickUri(Uri.parse("http://tasker.dinglisch.net"))
                             .build();
                     CioStatusBarManager.getInstance(CioStatusBarTest.this)
                             .publishTile(CUSTOM_TILE_SETTINGS_ID, customTile);
