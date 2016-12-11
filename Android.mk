@@ -27,7 +27,8 @@ aoscp_software_res := APPS/org.aoscp.software-res_intermediates/src
 # ============================================================
 include $(CLEAR_VARS)
 
-aoscp_app_src := src/java/
+aoscp_src := src/java/aoscp
+aoscp_internal_src := src/java/org/aoscp/interno
 library_src := aoscp/lib/main/java
 
 LOCAL_MODULE := org.aoscp.software
@@ -37,7 +38,8 @@ LOCAL_JAVA_LIBRARIES := \
     services
 
 LOCAL_SRC_FILES := \
-    $(call all-java-files-under, $(aoscp_app_src)) \
+    $(call all-java-files-under, $(aoscp_src)) \
+    $(call all-java-files-under, $(aoscp_interno_src)) \
     $(call all-java-files-under, $(library_src))
 
 ## READ ME: ########################################################
@@ -51,7 +53,8 @@ LOCAL_SRC_FILES := \
 ##
 ## READ ME: ########################################################
 LOCAL_SRC_FILES += \
-    $(call all-Iaidl-files-under, $(aoscp_app_src))
+    $(call all-Iaidl-files-under, $(aoscp_src)) \
+    $(call all-Iaidl-files-under, $(aoscp_interno_src))
 
 cosplat_LOCAL_INTERMEDIATE_SOURCES := \
     $(aoscp_software_res)/aoscp/software/R.java \
@@ -101,8 +104,9 @@ LOCAL_MODULE_TAGS := optional
 LOCAL_REQUIRED_MODULES := services
 
 LOCAL_SRC_FILES := \
-    $(call all-java-files-under, $(aoscp_app_src)) \
-    $(call all-Iaidl-files-under, $(aoscp_app_src))
+    $(call all-java-files-under, $(aoscp_src)) \
+    $(call all-Iaidl-files-under, $(aoscp_src)) \
+    $(call all-Iaidl-files-under, $(aoscp_interno_src))
 
 # Included aidl files from aoscp.app namespace
 LOCAL_AIDL_INCLUDES := $(LOCAL_PATH)/src/java
@@ -113,8 +117,8 @@ include $(BUILD_STATIC_JAVA_LIBRARY)
 # ===========================================================
 # Common Droiddoc vars
 cosplat_docs_src_files := \
-    $(call all-java-files-under, $(aoscp_app_src)) \
-    $(call all-html-files-under, $(aoscp_app_src))
+    $(call all-java-files-under, $(aoscp_src)) \
+    $(call all-html-files-under, $(aoscp_src))
 
 cosplat_docs_java_libraries := \
     org.aoscp.software.sdk
