@@ -740,7 +740,7 @@ public class CustomTile implements Parcelable {
         private int mIcon;
         private Context mContext;
 		private ExpandedStyle mExpandedStyle;
-		private boolean mCollapsePanel;
+		private boolean mCollapsePanel = true;
 
         /**
          * Constructs a new Builder with the defaults:
