@@ -26,6 +26,7 @@ LOCAL_SRC_FILES := $(call all-subdir-java-files)
 LOCAL_PACKAGE_NAME := CioPlatformTests
 LOCAL_CERTIFICATE := platform
 
+LOCAL_JAVA_LIBRARIES := android.test.runner
 LOCAL_PROGUARD_ENABLED := disabled
 
 include $(BUILD_PACKAGE)
