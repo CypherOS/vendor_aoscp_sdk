@@ -60,7 +60,6 @@ public class CioStatusBarTest extends TestActivity {
                             .setLabel("Test From SDK")
                             .setIcon(R.drawable.ic_launcher)
                             .setOnClickIntent(intent)
-							.shouldCollapsePanel(true)
                             .setContentDescription("Content description")
                             .build();
                     mCioStatusBarManager.publishTile(CUSTOM_TILE_ID, mCustomTile);
