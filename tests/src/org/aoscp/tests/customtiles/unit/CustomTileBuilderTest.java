@@ -105,6 +105,15 @@ public class CustomTileBuilderTest extends AndroidTestCase {
         assertNotSame(customTile.icon, 0);
         assertEquals(resourceInt, customTile.icon);
     }
+	
+	@SmallTest
+    public void testCustomTileBuilderCollapsePanelSet() {
+        boolean collapsePanel = true;
+        CustomTile customTile = new CustomTile.Builder(mContext)
+                .shouldCollapsePanel(collapsePanel)
+                .build();
+        assertEquals(collapsePanel, customTile.collapsePanel);
+    }
 
     @MediumTest
     public void testCustomTileBuilderExpandedListStyleSet() {
